@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>แบบสอบถาม HADS – ความวิตกกังวลและซึมเศร้า</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#0d7c8f;--teal-light:#e6f4f7;--teal-mid:#1a9db3;--navy:#0a2f3f;--bg:#f5f8fa;--gray-100:#f0f4f7;--gray-200:#dde4ea;--gray-400:#8fa3b1;--gray-700:#3a4f5c;--text:#1a2e38;--shadow:0 2px 16px rgba(13,124,143,0.10);--radius:14px;--A:#0d7c8f;--D:#7c3aed}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:'Sarabun',sans-serif;color:var(--text);min-height:100vh}
+.header{background:linear-gradient(135deg,var(--navy),var(--teal));color:white;padding:24px 20px 28px;text-align:center}
+.clinic-badge{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:4px 14px;font-size:11px;margin-bottom:10px;font-weight:500}
+.header h1{font-size:20px;font-weight:700;line-height:1.4;margin-bottom:6px}
+.header p{font-size:13px;opacity:0.8}
+.progress-wrap{background:white;padding:14px 20px;box-shadow:0 1px 6px rgba(0,0,0,0.06);position:sticky;top:0;z-index:100}
+.progress-top{display:flex;justify-content:space-between;font-size:12px;color:var(--gray-400);margin-bottom:6px;font-weight:500}
+.progress-bar-bg{height:6px;background:var(--gray-200);border-radius:10px;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal-mid));border-radius:10px;transition:width 0.4s ease;width:0%}
+.patient-section{background:white;margin:16px 16px 0;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.section-label{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--teal);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--gray-200)}
+.field-row{display:flex;gap:12px;flex-wrap:wrap}
+.field{flex:1;min-width:130px;display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;color:var(--gray-700);font-weight:600}
+.field input{border:1.5px solid var(--gray-200);border-radius:8px;padding:9px 12px;font-size:14px;font-family:inherit;background:var(--gray-100);color:var(--text)}
+.field input:focus{outline:none;border-color:var(--teal);background:white}
+.instructions{background:var(--teal-light);border-left:4px solid var(--teal);margin:14px 16px 0;border-radius:0 var(--radius) var(--radius) 0;padding:14px 16px;font-size:13.5px;line-height:1.7;color:var(--navy)}
+.legend{display:flex;gap:12px;padding:10px 16px 0;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600}
+.legend-dot{width:10px;height:10px;border-radius:3px}
+.legend-dot.A{background:#b3e4ec}.legend-dot.D{background:#ddd6fe}
+.questions-wrap{padding:14px 16px 0}
+.q-card{background:white;border-radius:var(--radius);margin-bottom:10px;box-shadow:0 1px 6px rgba(0,0,0,0.06);overflow:hidden;border:2px solid transparent}
+.q-card.answered{border-color:var(--teal-light)}
+.q-top{display:flex;align-items:flex-start;gap:10px;padding:14px 14px 10px}
+.q-num{min-width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;margin-top:1px}
+.q-num.A{background:#e8f0f3;color:var(--gray-700)}
+.q-num.D{background:#e8f0f3;color:var(--gray-700)}
+.q-text{font-size:14.5px;line-height:1.6;flex:1;padding-top:5px}
+.q-options{display:flex;flex-direction:column;border-top:1px solid var(--gray-100)}
+.q-opt input[type="radio"]{display:none}
+.q-opt label{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;cursor:pointer;font-size:13.5px;font-weight:500;color:var(--gray-700);border-bottom:1px solid var(--gray-100);gap:8px;user-select:none;transition:background 0.15s}
+.q-opt:last-child label{border-bottom:none}
+.q-opt label:hover{background:var(--gray-100)}
+.q-opt input:checked+label{color:white;font-weight:700}
+.q-opt.s0 input:checked+label{background:#0d7c8f}
+.q-opt.s1 input:checked+label{background:#2e8b57}
+.q-opt.s2 input:checked+label{background:#d97706}
+.q-opt.s3 input:checked+label{background:#dc2626}
+.score-badge{background:rgba(0,0,0,0.12);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:700;flex-shrink:0}
+.submit-section{padding:20px 16px 40px}
+.btn-submit{width:100%;padding:16px;background:linear-gradient(135deg,var(--teal),var(--teal-mid));color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 4px 16px rgba(13,124,143,0.35);transition:all 0.2s}
+.btn-submit:hover{transform:translateY(-1px)}
+.btn-submit:disabled{background:var(--gray-400);box-shadow:none;cursor:not-allowed;transform:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:white;padding:12px 22px;border-radius:30px;font-size:13px;font-weight:600;z-index:9999;transition:transform 0.3s ease;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+@media(max-width:400px){.header h1{font-size:17px}.q-text{font-size:14px}.field-row{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="clinic-badge">แบบประเมินสุขภาพจิต · HADS Thai Version</div>
+  <h1>แบบสอบถาม HADS<br>ความวิตกกังวลและซึมเศร้า</h1>
+  <p>Hospital Anxiety and Depression Scale (HADS) — Thai Version</p>
+</div>
+<div class="progress-wrap">
+  <div class="progress-top"><span id="prog-text">กรุณาตอบคำถามทุกข้อ</span><span id="prog-count">0 / 14</span></div>
+  <div class="progress-bar-bg"><div class="progress-bar" id="prog-bar"></div></div>
+</div>
+<div class="patient-section">
+  <div class="section-label">ข้อมูลผู้ป่วย</div>
+  <div class="field-row">
+    <div class="field"><label>ชื่อ–นามสกุล</label><input type="text" id="pt-name" placeholder="ชื่อ-นามสกุล"></div>
+    <div class="field" style="max-width:130px"><label>HN</label><input type="text" id="pt-hn" placeholder="HN"></div>
+  </div>
+  <div class="field-row" style="margin-top:10px">
+    <div class="field" style="max-width:160px"><label>วันที่</label><input type="date" id="pt-date"></div>
+    <div class="field" style="max-width:130px"><label>VR#</label><input type="text" id="pt-vr" placeholder="VR#"></div>
+  </div>
+</div>
+<div class="instructions">
+  <strong>คำชี้แจง:</strong> กรุณาอ่านข้อความแต่ละข้อ และทำเครื่องหมายในคำตอบที่ใกล้เคียงกับความรู้สึกของท่าน<strong>ในช่วง 1 สัปดาห์ที่ผ่านมา</strong>มากที่สุด <strong>และกรุณาตอบทุกข้อ</strong>
+</div>
+
+<div class="questions-wrap" id="questions-wrap"></div>
+<div class="submit-section">
+  <button class="btn-submit" id="btn-submit" onclick="submitForm()">ส่งแบบสอบถาม →</button>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4ywQrrhcqdgI4oE3_VREQZefBqLGnvdjq980lLM-0FdOcbRv8-zqjwUdl6wW36CuF/exec';
+
+// Questions ordered 1-14, with their subscale (A=Anxiety odd, D=Depression even)
+// Score is the value shown next to each answer in the original doc
+const questions = [
+  {id:'A1', num:1, type:'A', text:'ฉันรู้สึกตึงเครียด',
+   opts:[{text:'เป็นส่วนใหญ่',score:3},{text:'บ่อยครั้ง',score:2},{text:'เป็นบางครั้ง',score:1},{text:'ไม่เป็นเลย',score:0}]},
+  {id:'D2', num:2, type:'D', text:'ฉันรู้สึกเพลิดเพลินใจกับสิ่งต่างๆ ที่ฉันเคยชอบได้',
+   opts:[{text:'เหมือนเดิม',score:0},{text:'ไม่มากเท่าแต่ก่อน',score:1},{text:'มีเพียงเล็กน้อย',score:2},{text:'เกือบไม่มีเลย',score:3}]},
+  {id:'A3', num:3, type:'A', text:'ฉันมีความรู้สึกกลัว คล้ายกับว่ากำลังจะมีเรื่องไม่ดีเกิดขึ้น',
+   opts:[{text:'มี และค่อนข้างรุนแรงด้วย',score:3},{text:'มี แต่ไม่มากนัก',score:2},{text:'มีเพียงเล็กน้อยและไม่ทำให้กังวลใจ',score:1},{text:'ไม่มีเลย',score:0}]},
+  {id:'D4', num:4, type:'D', text:'ฉันสามารถหัวเราะและมีอารมณ์ขันในเรื่องต่างๆ ได้',
+   opts:[{text:'เหมือนเดิม',score:0},{text:'ไม่มากนัก',score:1},{text:'มีน้อย',score:2},{text:'ไม่มีเลย',score:3}]},
+  {id:'A5', num:5, type:'A', text:'ฉันมีความคิดวิตกกังวล',
+   opts:[{text:'เป็นส่วนใหญ่',score:3},{text:'บ่อยครั้ง',score:2},{text:'เป็นบางครั้ง แต่ไม่บ่อย',score:1},{text:'นานๆ ครั้ง',score:0}]},
+  {id:'D6', num:6, type:'D', text:'ฉันรู้สึกแจ่มใสเบิกบาน',
+   opts:[{text:'ไม่มีเลย',score:3},{text:'ไม่บ่อยนัก',score:2},{text:'เป็นบางครั้ง',score:1},{text:'เป็นส่วนใหญ่',score:0}]},
+  {id:'A7', num:7, type:'A', text:'ฉันสามารถทำตัวตามสบาย และรู้สึกผ่อนคลาย',
+   opts:[{text:'ได้ดีมาก',score:0},{text:'ได้โดยทั่วไป',score:1},{text:'ไม่บ่อยนัก',score:2},{text:'ไม่ได้เลย',score:3}]},
+  {id:'D8', num:8, type:'D', text:'ฉันรู้สึกว่าตัวเองคิดอะไร ทำอะไร เชื่องช้าลงกว่าเดิม',
+   opts:[{text:'เกือบตลอดเวลา',score:3},{text:'บ่อยมาก',score:2},{text:'เป็นบางครั้ง',score:1},{text:'ไม่เป็นเลย',score:0}]},
+  {id:'A9', num:9, type:'A', text:'ฉันรู้สึกไม่สบายใจ จนทำให้ปั่นป่วนในท้อง',
+   opts:[{text:'ไม่เป็นเลย',score:0},{text:'เป็นบางครั้ง',score:1},{text:'ค่อนข้างบ่อย',score:2},{text:'บ่อยมาก',score:3}]},
+  {id:'D10', num:10, type:'D', text:'ฉันปล่อยเนื้อปล่อยตัว ไม่สนใจตนเอง',
+   opts:[{text:'ใช่',score:3},{text:'ไม่ค่อยใส่ใจเท่าที่ควร',score:2},{text:'ใส่ใจน้อยกว่าแต่ก่อน',score:1},{text:'ยังใส่ใจตนเองเหมือนเดิม',score:0}]},
+  {id:'A11', num:11, type:'A', text:'ฉันรู้สึกกระสับกระส่าย เหมือนกับจะอยู่นิ่งๆ ไม่ได้',
+   opts:[{text:'เป็นมากทีเดียว',score:3},{text:'ค่อนข้างมาก',score:2},{text:'ไม่มากนัก',score:1},{text:'ไม่เป็นเลย',score:0}]},
+  {id:'D12', num:12, type:'D', text:'ฉันมองสิ่งต่างๆ ในอนาคต ด้วยความเบิกบานใจ',
+   opts:[{text:'มากเท่าที่เคยเป็น',score:0},{text:'ค่อนข้างน้อยกว่าที่เคยเป็น',score:1},{text:'น้อยกว่าที่เคยเป็น',score:2},{text:'เกือบจะไม่มีเลย',score:3}]},
+  {id:'A13', num:13, type:'A', text:'ฉันรู้สึกผวาหรือตกใจขึ้นมาอย่างกะทันหัน',
+   opts:[{text:'บ่อยมาก',score:3},{text:'ค่อนข้างบ่อย',score:2},{text:'ไม่บ่อยนัก',score:1},{text:'ไม่มีเลย',score:0}]},
+  {id:'D14', num:14, type:'D', text:'ฉันรู้สึกเพลิดเพลินไปกับการอ่านหนังสือ ฟังวิทยุ หรือดูโทรทัศน์ หรือกิจกรรมอื่นๆ ที่เคยเพลิดเพลินได้',
+   opts:[{text:'เป็นส่วนใหญ่',score:0},{text:'เป็นบางครั้ง',score:1},{text:'ไม่บ่อยนัก',score:2},{text:'น้อยมาก',score:3}]},
+];
+
+function renderQuestions(){
+  document.getElementById('questions-wrap').innerHTML = questions.map(q => `
+    <div class="q-card" id="card-${q.id}">
+      <div class="q-top">
+        <div class="q-num ${q.type}">${q.num}</div>
+        <div class="q-text">${q.text}</div>
+      </div>
+      <div class="q-options">
+        ${q.opts.map((opt,i) => `
+          <div class="q-opt s${opt.score}">
+            <input type="radio" name="${q.id}" id="${q.id}-${i}" value="${opt.score}" onchange="onAnswer('${q.id}')">
+            <label for="${q.id}-${i}">
+              <span>${opt.text}</span>
+              <span class="score-badge">${opt.score}</span>
+            </label>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function onAnswer(qid){
+  document.getElementById('card-'+qid).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const n = questions.filter(q => document.querySelector(`input[name="${q.id}"]:checked`)).length;
+  document.getElementById('prog-bar').style.width = (n/14*100)+'%';
+  document.getElementById('prog-count').textContent = n+' / 14';
+  document.getElementById('prog-text').textContent = n===14 ? '✅ ตอบครบทุกข้อแล้ว' : n===0 ? 'กรุณาตอบคำถามทุกข้อ' : `ตอบแล้ว ${n} ข้อ…`;
+}
+
+async function submitForm(){
+  const missing = questions.filter(q => !document.querySelector(`input[name="${q.id}"]:checked`));
+  if(missing.length > 0){
+    showToast('⚠️ ยังไม่ได้ตอบอีก '+missing.length+' ข้อ');
+    document.getElementById('card-'+missing[0].id).scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true; btn.textContent = '⏳ กำลังบันทึก…';
+
+  const answers = {};
+  let totalA = 0, totalD = 0;
+  questions.forEach(q => {
+    const val = parseInt(document.querySelector(`input[name="${q.id}"]:checked`).value);
+    answers[q.id] = val;
+    if(q.type==='A') totalA += val;
+    else totalD += val;
+  });
+
+  const payload = {
+    name: document.getElementById('pt-name').value||'',
+    hn: document.getElementById('pt-hn').value||'',
+    date: document.getElementById('pt-date').value||'',
+    vr: document.getElementById('pt-vr').value||'',
+    answers: questions.map(q => answers[q.id]),
+    anxiety: totalA,
+    depression: totalD,
+  };
+
+  try{
+    await fetch(APPS_SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
+  }catch(e){console.log('Sheet save attempted');}
+
+  const params = new URLSearchParams();
+  params.set('name',payload.name); params.set('hn',payload.hn);
+  params.set('date',payload.date); params.set('vr',payload.vr);
+  params.set('A',totalA); params.set('D',totalD);
+  questions.forEach(q => params.set(q.id, answers[q.id]));
+  window.location.href = 'hads_result.html?'+params.toString();
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+renderQuestions();
+document.getElementById('pt-date').value = new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>
