@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ผลแบบสอบถาม HADS</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#0d7c8f;--teal-mid:#1a9db3;--navy:#0a2f3f;--bg:#f0f6f8;--gray-100:#f0f4f7;--gray-200:#dde4ea;--gray-400:#8fa3b1;--gray-700:#3a4f5c;--text:#1a2e38;--radius:18px;--A:#0d7c8f;--D:#7c3aed;--P:#2563eb;--E:#7c3aed;--F:#059669}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:'Sarabun',sans-serif;color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding-bottom:48px}
+.topbar{width:100%;background:linear-gradient(135deg,var(--navy),var(--teal));padding:18px 20px 16px;text-align:center;color:white}
+.topbar .clinic{font-size:11px;opacity:0.7;margin-bottom:4px}
+.topbar h1{font-size:17px;font-weight:700}
+.card-wrap{width:100%;max-width:440px;padding:20px 16px 0;display:flex;flex-direction:column;gap:14px}
+.thanks-card{background:white;border-radius:var(--radius);padding:36px 24px;text-align:center;box-shadow:0 4px 24px rgba(13,124,143,0.10)}
+.checkmark{width:80px;height:80px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:38px}
+.thanks-card h2{font-size:24px;font-weight:800;color:var(--navy);margin-bottom:10px}
+.thanks-card p{font-size:14.5px;color:var(--gray-700);line-height:1.8}
+.pt-info{font-size:12px;color:var(--gray-400);text-align:center;padding:8px 0 0}
+.btn-clinician{width:100%;padding:14px 16px;background:white;border:1.5px solid var(--gray-200);border-radius:12px;font-family:inherit;font-size:13px;font-weight:600;color:var(--gray-700);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s}
+.btn-clinician:hover{border-color:var(--teal);color:var(--teal)}
+.clinician-wrap{display:none;flex-direction:column;gap:14px;width:100%}
+.clinician-wrap.show{display:flex}
+.clinician-badge{background:linear-gradient(135deg,var(--navy),var(--teal));border-radius:var(--radius);padding:14px 20px;color:white;text-align:center;font-size:13px;font-weight:600}
+.section-divider{background:white;border-radius:var(--radius);padding:14px 20px;box-shadow:0 2px 12px rgba(13,124,143,0.08);display:flex;align-items:center;gap:10px}
+.section-divider .icon{font-size:22px}
+.section-divider .label{font-size:13px;font-weight:700;color:var(--navy)}
+.section-divider .sublabel{font-size:11px;color:var(--gray-400);margin-top:2px}
+.cp-title{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--teal);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.cp-title::after{content:'';flex:1;height:1px;background:var(--gray-200)}
+.scores-row{display:flex;gap:12px}
+.score-half{flex:1;background:white;border-radius:var(--radius);padding:22px 16px;text-align:center;box-shadow:0 4px 24px rgba(13,124,143,0.10)}
+.score-half .label-top{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.score-half.anxiety .label-top{color:var(--A)}.score-half.depression .label-top{color:var(--D)}
+.big-circle{width:100px;height:100px;border-radius:50%;margin:0 auto 14px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.big-circle .num{font-size:36px;font-weight:800;line-height:1}
+.big-circle .denom{font-size:12px;font-weight:500;opacity:0.6;margin-top:2px}
+.sev-none{background:#dcfce7;color:#15803d}.sev-doubtful{background:#fef9c3;color:#a16207}.sev-case{background:#fee2e2;color:#b91c1c}
+.sev-name{font-size:15px;font-weight:800;margin-bottom:4px}
+.sev-range{font-size:11px;color:var(--gray-400);margin-bottom:12px}
+.sev-bar-wrap{margin:0 0 12px}
+.sev-bar-track{height:8px;border-radius:10px;overflow:hidden;background:var(--gray-200)}
+.sev-bar-fill{height:100%;border-radius:10px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.sev-bar-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--gray-400);margin-top:4px;font-weight:600}
+.meaning-box{background:var(--bg);border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.7;color:var(--gray-700);text-align:left}
+.meaning-box strong{color:var(--navy)}
+.dhi-score-card{background:white;border-radius:var(--radius);padding:22px 20px;text-align:center;box-shadow:0 4px 24px rgba(13,124,143,0.10)}
+.dhi-score-card .label-top{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--teal);text-transform:uppercase;margin-bottom:14px}
+.dhi-big-circle{width:110px;height:110px;border-radius:50%;margin:0 auto 14px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dhi-big-circle .num{font-size:40px;font-weight:800;line-height:1}
+.dhi-big-circle .denom{font-size:13px;font-weight:500;opacity:0.6;margin-top:2px}
+.dhi-sev-none{background:#dcfce7;color:#15803d}.dhi-sev-mild{background:#fef9c3;color:#a16207}
+.dhi-sev-moderate{background:#ffedd5;color:#c2410c}.dhi-sev-severe{background:#fee2e2;color:#b91c1c}
+.summary-card{background:white;border-radius:var(--radius);padding:20px;box-shadow:0 4px 24px rgba(13,124,143,0.10)}
+.sum-row{display:flex;gap:10px;margin-bottom:14px}
+.sum-box{flex:1;border-radius:10px;padding:14px 10px;text-align:center}
+.sum-box.A{background:#e0f5f8}.sum-box.D{background:#f5f3ff}
+.sum-box.P{background:#eff6ff}.sum-box.Es{background:#f5f3ff}.sum-box.Fs{background:#ecfdf5}
+.sum-box .sv{font-size:22px;font-weight:800;display:block}
+.sum-box.A .sv{color:var(--A)}.sum-box.D .sv{color:var(--D)}
+.sum-box.P .sv{color:var(--P)}.sum-box.Es .sv{color:var(--E)}.sum-box.Fs .sv{color:var(--F)}
+.sum-box .sn{font-size:10px;font-weight:700;opacity:0.65;display:block;margin-top:2px}
+.sum-box .sl{font-size:11px;opacity:0.6}
+.cp-table{width:100%;border-collapse:collapse;font-size:13px}
+.cp-table tr{border-bottom:1px solid var(--gray-100)}.cp-table tr:last-child{border-bottom:none}
+.cp-table td{padding:9px 4px}.cp-table td:last-child{text-align:right;font-weight:700}
+.ans-grid-hads{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:8px}
+.ans-grid-dhi{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:8px}
+.ans-chip{border-radius:6px;padding:6px 4px;text-align:center;font-size:10px;font-weight:700}
+.ans-chip .qid{display:block;opacity:0.6;font-size:9px}
+.ans-chip.A-chip{background:#e0f5f8;color:var(--A)}.ans-chip.D-chip{background:#f5f3ff;color:var(--D)}
+.ans-chip.yes{background:#dcfce7;color:#15803d}.ans-chip.sometimes{background:#fef3c7;color:#92400e}.ans-chip.no{background:#fee2e2;color:#991b1b}
+.btn-csv{width:100%;padding:14px;background:var(--teal);color:white;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;margin-top:14px;transition:background 0.2s}
+.btn-csv:hover{background:var(--navy)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="clinic">แบบประเมินสุขภาพจิต · HADS Thai Version</div>
+  <h1>ผลแบบสอบถาม HADS</h1>
+</div>
+<div class="card-wrap">
+  <div class="thanks-card">
+    <div class="checkmark">✅</div>
+    <h2>ขอบคุณค่ะ</h2>
+    <p>ตอบแบบสอบถาม HADS ครบ 14 ข้อแล้ว<br>กรุณาคืนอุปกรณ์ให้เจ้าหน้าที่</p>
+    <p class="pt-info" id="pt-info"></p>
+  </div>
+  <button class="btn-clinician" id="btn-clin" onclick="showPinDialog()">🔒 Clinician Access</button>
+  <div class="clinician-wrap" id="clinician-wrap">
+    <div class="clinician-badge">🩺 Clinician View</div>
+    <div class="section-divider"><div class="icon">🧠</div><div><div class="label">HADS — ความวิตกกังวลและซึมเศร้า</div><div class="sublabel">Hospital Anxiety and Depression Scale</div></div></div>
+    <div class="scores-row">
+      <div class="score-half anxiety">
+        <div class="label-top">Anxiety Score</div>
+        <div class="big-circle" id="a-circle"><span class="num" id="a-num">–</span><span class="denom">/ 21</span></div>
+        <div class="sev-name" id="a-sev-name"></div><div class="sev-range" id="a-sev-range"></div>
+        <div class="sev-bar-wrap"><div class="sev-bar-track"><div class="sev-bar-fill" id="a-bar" style="width:0%"></div></div><div class="sev-bar-labels"><span>0</span><span>7</span><span>10</span><span>21</span></div></div>
+        <div class="meaning-box" id="a-meaning"></div>
+      </div>
+      <div class="score-half depression">
+        <div class="label-top">Depression Score</div>
+        <div class="big-circle" id="d-circle"><span class="num" id="d-num">–</span><span class="denom">/ 21</span></div>
+        <div class="sev-name" id="d-sev-name"></div><div class="sev-range" id="d-sev-range"></div>
+        <div class="sev-bar-wrap"><div class="sev-bar-track"><div class="sev-bar-fill" id="d-bar" style="width:0%"></div></div><div class="sev-bar-labels"><span>0</span><span>7</span><span>10</span><span>21</span></div></div>
+        <div class="meaning-box" id="d-meaning"></div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="cp-title">รายละเอียด HADS</div>
+      <div class="sum-row">
+        <div class="sum-box A"><span class="sv" id="sum-a">–</span><span class="sn">ANXIETY</span><span class="sl">คะแนน /21</span></div>
+        <div class="sum-box D"><span class="sv" id="sum-d">–</span><span class="sn">DEPRESSION</span><span class="sl">คะแนน /21</span></div>
+      </div>
+      <div class="cp-title" style="margin-top:0">คำตอบรายข้อ HADS</div>
+      <div class="ans-grid-hads" id="hads-ans-grid"></div>
+    </div>
+    <div id="dhi-section" style="display:none;flex-direction:column;gap:14px;">
+      <div class="section-divider"><div class="icon">🌀</div><div><div class="label">DHI — ผลกระทบอาการเวียนศีรษะ</div><div class="sublabel">Dizziness Handicap Inventory</div></div></div>
+      <div class="dhi-score-card">
+        <div class="label-top">คะแนนรวม DHI</div>
+        <div class="dhi-big-circle" id="dhi-circle"><span class="num" id="dhi-total">–</span><span class="denom">/ 100</span></div>
+        <div class="sev-name" id="dhi-sev-name"></div><div class="sev-range" id="dhi-sev-range"></div>
+        <div class="sev-bar-wrap"><div class="sev-bar-track"><div class="sev-bar-fill" id="dhi-bar" style="width:0%"></div></div><div class="sev-bar-labels"><span>0</span><span>น้อย</span><span>ปานกลาง</span><span>มาก</span><span>100</span></div></div>
+      </div>
+      <div class="summary-card">
+        <div class="cp-title">รายละเอียด DHI</div>
+        <div class="sum-row">
+          <div class="sum-box P"><span class="sv" id="dhi-p">–</span><span class="sn">P SCORE</span><span class="sl">ร่างกาย /28</span></div>
+          <div class="sum-box Es"><span class="sv" id="dhi-e">–</span><span class="sn">E SCORE</span><span class="sl">อารมณ์ /36</span></div>
+          <div class="sum-box Fs"><span class="sv" id="dhi-f">–</span><span class="sn">F SCORE</span><span class="sl">การทำงาน /36</span></div>
+        </div>
+        <table class="cp-table">
+          <tr><td>BPPV Score (P1+F5+P11+P13+P25)</td><td id="dhi-bppv">–</td></tr>
+          <tr><td>BPPV % (/20×100)</td><td id="dhi-bppv-pct">–</td></tr>
+          <tr><td>Cervicogenic (P1+P11+E9)</td><td id="dhi-cerv">–</td></tr>
+          <tr><td>MCID threshold</td><td>18</td></tr>
+          <tr><td>Total DHI &lt;20</td><td>unlikely vestibular</td></tr>
+        </table>
+        <div class="cp-title" style="margin-top:14px">คำตอบรายข้อ DHI</div>
+        <div class="ans-grid-dhi" id="dhi-ans-grid"></div>
+      </div>
+    </div>
+    <button class="btn-csv" onclick="downloadCSV()">⬇ ดาวน์โหลด CSV รวม DHI + HADS</button>
+  </div>
+</div>
+<script>
+const hadsQ=[{id:'A1',num:1,type:'A'},{id:'D2',num:2,type:'D'},{id:'A3',num:3,type:'A'},{id:'D4',num:4,type:'D'},{id:'A5',num:5,type:'A'},{id:'D6',num:6,type:'D'},{id:'A7',num:7,type:'A'},{id:'D8',num:8,type:'D'},{id:'A9',num:9,type:'A'},{id:'D10',num:10,type:'D'},{id:'A11',num:11,type:'A'},{id:'D12',num:12,type:'D'},{id:'A13',num:13,type:'A'},{id:'D14',num:14,type:'D'}];
+const dhiQ=[{id:'P1'},{id:'E2'},{id:'F3'},{id:'P4'},{id:'F5'},{id:'F6'},{id:'F7'},{id:'P8'},{id:'E9'},{id:'E10'},{id:'P11'},{id:'F12'},{id:'P13'},{id:'F14'},{id:'E15'},{id:'F16'},{id:'P17'},{id:'E18'},{id:'F19'},{id:'E20'},{id:'E21'},{id:'E22'},{id:'E23'},{id:'F24'},{id:'P25'}];
+const DS={yes:4,sometimes:2,no:0};
+const p=new URLSearchParams(window.location.search);
+const get=k=>p.get(k)||'';
+const name=get('name'),hn=get('hn'),date=get('date'),vr=get('vr');
+const totalA=parseInt(get('A'))||0,totalD=parseInt(get('D'))||0;
+const dhiTotal=get('dhi_total')!==''?parseInt(get('dhi_total')):null;
+const dhiP=parseInt(get('dhi_P'))||0,dhiE=parseInt(get('dhi_E'))||0,dhiF=parseInt(get('dhi_F'))||0;
+const dhiBppv=parseInt(get('dhi_bppv'))||0,dhiCerv=parseInt(get('dhi_cerv'))||0;
+const pts=[];if(name)pts.push(name);if(hn)pts.push('HN: '+hn);if(date)pts.push(date);
+document.getElementById('pt-info').textContent=pts.join(' · ');
+function getHS(s){if(s<=7)return{cls:'sev-none',name:'Normal',range:'0–7 (ปกติ)',color:'#16a34a',meaning:'<strong>ปกติ</strong> — คะแนนอยู่ในเกณฑ์ปกติ'};if(s<=10)return{cls:'sev-doubtful',name:'Doubtful Case',range:'8–10 (ไม่แน่ชัด)',color:'#d97706',meaning:'<strong>Doubtful Case</strong> — คะแนนอยู่ในเกณฑ์ที่ควรติดตาม'};return{cls:'sev-case',name:'Case',range:'11–21 (มีปัญหา)',color:'#dc2626',meaning:'<strong>Case</strong> — คะแนนบ่งชี้ว่ามีปัญหาที่ควรได้รับการดูแล'};}
+function getDS2(s){if(s===0)return{cls:'dhi-sev-none',name:'ไม่มีผลกระทบ',range:'คะแนน 0',color:'#16a34a'};if(s<=34)return{cls:'dhi-sev-mild',name:'ผลกระทบระดับน้อย',range:'คะแนน 16–34 (Mild)',color:'#d97706'};if(s<=52)return{cls:'dhi-sev-moderate',name:'ผลกระทบระดับปานกลาง',range:'คะแนน 36–52 (Moderate)',color:'#c2410c'};return{cls:'dhi-sev-severe',name:'ผลกระทบระดับมาก',range:'คะแนน 54+ (Severe)',color:'#b91c1c'};}
+function applyH(nid,cid,snid,srid,bid,mid,sc){const s=getHS(sc);document.getElementById(nid).textContent=sc;document.getElementById(cid).className='big-circle '+s.cls;document.getElementById(snid).textContent=s.name;document.getElementById(srid).textContent=s.range;document.getElementById(mid).innerHTML=s.meaning;const b=document.getElementById(bid);b.style.background=s.color;setTimeout(()=>{b.style.width=Math.min(sc/21*100,100)+'%';},100);}
+let rendered=false;
+function renderClinician(){
+  if(rendered)return;rendered=true;
+  applyH('a-num','a-circle','a-sev-name','a-sev-range','a-bar','a-meaning',totalA);
+  applyH('d-num','d-circle','d-sev-name','d-sev-range','d-bar','d-meaning',totalD);
+  document.getElementById('sum-a').textContent=totalA;
+  document.getElementById('sum-d').textContent=totalD;
+  document.getElementById('hads-ans-grid').innerHTML=hadsQ.map(q=>'<div class="ans-chip '+q.type+'-chip"><span class="qid">'+q.num+'</span>'+(parseInt(get(q.id))||0)+'</div>').join('');
+  if(dhiTotal!==null){
+    const sec=document.getElementById('dhi-section');sec.style.display='flex';
+    const ds=getDS2(dhiTotal);
+    document.getElementById('dhi-total').textContent=dhiTotal;
+    document.getElementById('dhi-circle').className='dhi-big-circle '+ds.cls;
+    document.getElementById('dhi-sev-name').textContent=ds.name;
+    document.getElementById('dhi-sev-range').textContent=ds.range;
+    const db=document.getElementById('dhi-bar');db.style.background=ds.color;
+    setTimeout(()=>{db.style.width=Math.min(dhiTotal,100)+'%';},150);
+    document.getElementById('dhi-p').textContent=dhiP;
+    document.getElementById('dhi-e').textContent=dhiE;
+    document.getElementById('dhi-f').textContent=dhiF;
+    document.getElementById('dhi-bppv').textContent=dhiBppv+'/20';
+    document.getElementById('dhi-bppv-pct').textContent=Math.round(dhiBppv/20*100)+'%';
+    document.getElementById('dhi-cerv').textContent=dhiCerv+(dhiCerv>9?' ⚠️':'');
+    document.getElementById('dhi-ans-grid').innerHTML=dhiQ.map(q=>{const v=get('dhi_'+q.id)||'no';return'<div class="ans-chip '+v+'"><span class="qid">'+q.id+'</span>'+(DS[v]!==undefined?DS[v]:v)+'</div>';}).join('');
+  }
+}
+const PIN='0180';let pinVerified=false;
+function openClinicianView(){document.getElementById('clinician-wrap').classList.add('show');document.getElementById('btn-clin').innerHTML='🔓 Clinician View';renderClinician();}
+function showPinDialog(){
+  if(pinVerified){openClinicianView();return;}
+  const o=document.createElement('div');o.id='pin-overlay';
+  o.style.cssText='position:fixed;inset:0;background:rgba(10,47,63,0.75);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  const keys=[1,2,3,4,5,6,7,8,9,'','0','⌫'];
+  o.innerHTML='<div style="background:white;border-radius:20px;padding:32px 28px;width:300px;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.25);"><div style="font-size:36px;margin-bottom:12px;">🩺</div><div style="font-size:16px;font-weight:800;color:#0a2f3f;margin-bottom:6px;">Clinician Access</div><div style="font-size:13px;color:#8fa3b1;margin-bottom:20px;">กรุณาใส่รหัส PIN 4 หลัก</div><div style="display:flex;gap:12px;justify-content:center;margin-bottom:22px;"><div id="dot-0" style="width:16px;height:16px;border-radius:50%;border:2px solid #dde4ea;transition:all 0.15s;"></div><div id="dot-1" style="width:16px;height:16px;border-radius:50%;border:2px solid #dde4ea;transition:all 0.15s;"></div><div id="dot-2" style="width:16px;height:16px;border-radius:50%;border:2px solid #dde4ea;transition:all 0.15s;"></div><div id="dot-3" style="width:16px;height:16px;border-radius:50%;border:2px solid #dde4ea;transition:all 0.15s;"></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;">'+keys.map(k=>'<button onclick="pinPress(\''+k+'\')" '+(k===''?'disabled':'')+' style="padding:16px;border:1.5px solid #dde4ea;border-radius:12px;font-size:20px;font-weight:700;background:'+(k===''?'transparent':'#f5f8fa')+';cursor:'+(k===''?'default':'pointer')+';color:#1a2e38;font-family:inherit;transition:background 0.1s;">'+k+'</button>').join('')+'</div><div id="pin-error" style="font-size:12px;color:#dc2626;min-height:18px;margin-bottom:4px;"></div><button onclick="closePinDialog()" style="background:none;border:none;font-size:13px;color:#8fa3b1;cursor:pointer;font-family:inherit;margin-top:4px;">ยกเลิก</button></div>';
+  document.body.appendChild(o);window._pin='';
+}
+function pinPress(k){
+  if(k==='')return;
+  if(k==='⌫'){window._pin=(window._pin||'').slice(0,-1);}else{if((window._pin||'').length>=4)return;window._pin=(window._pin||'')+k;}
+  for(let i=0;i<4;i++){const d=document.getElementById('dot-'+i);if(d){d.style.background=i<window._pin.length?'#0d7c8f':'transparent';d.style.borderColor='#dde4ea';}}
+  if(window._pin.length===4){setTimeout(()=>{if(window._pin===PIN){pinVerified=true;closePinDialog();openClinicianView();}else{document.getElementById('pin-error').textContent='❌ รหัสไม่ถูกต้อง';window._pin='';for(let i=0;i<4;i++){const d=document.getElementById('dot-'+i);if(d){d.style.background='transparent';d.style.borderColor='#dc2626';}}setTimeout(()=>{for(let i=0;i<4;i++){const d=document.getElementById('dot-'+i);if(d)d.style.borderColor='#dde4ea';}const e=document.getElementById('pin-error');if(e)e.textContent='';},1000);}},120);}
+}
+function closePinDialog(){const o=document.getElementById('pin-overlay');if(o)o.remove();window._pin='';}
+const sevAName=getHS(totalA).name,sevDName=getHS(totalD).name;
+function downloadCSV(){
+  let csv='\uFEFF';
+  let hdr='ชื่อ-นามสกุล,HN,วันที่,VR#,'+hadsQ.map(q=>'HADS_Q'+q.num+'('+q.type+')').join(',')+',Anxiety Score,Anxiety Severity,Depression Score,Depression Severity';
+  if(dhiTotal!==null)hdr+=','+dhiQ.map(q=>'DHI_'+q.id).join(',')+',DHI_P,DHI_E,DHI_F,DHI_Total,DHI_Severity,BPPV_Score,BPPV_Pct,Cervicogenic';
+  csv+=hdr+'\n';
+  let row='"'+name+'","'+hn+'","'+date+'","'+vr+'",'+hadsQ.map(q=>parseInt(get(q.id))||0).join(',')+','+totalA+',"'+sevAName+'",'+totalD+',"'+sevDName+'"';
+  if(dhiTotal!==null){row+=','+dhiQ.map(q=>{const v=get('dhi_'+q.id)||'no';return DS[v]!==undefined?DS[v]:v;}).join(',')+','+dhiP+','+dhiE+','+dhiF+','+dhiTotal+',"'+getDS2(dhiTotal).name+'",'+dhiBppv+','+Math.round(dhiBppv/20*100)+'%,'+dhiCerv;}
+  csv+=row+'\n';
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='DHI_HADS_'+(name||'result')+'_'+(date||'today')+'.csv';a.click();URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
